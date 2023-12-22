@@ -13,7 +13,7 @@ module.exports = {
 			vi: "Xem id nhóm chat của bạn",
 			en: "View threadID of your group chat"
 		},
-		category: "info",
+		category: "box chat",
 		guide: {
 			en: "{pn}"
 		}
