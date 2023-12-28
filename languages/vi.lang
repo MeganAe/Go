@@ -59,6 +59,7 @@ login.refreshCookieAfter=Đã bật tự động làm mới cookie sau mỗi %1
 login.listenMqttClose=Đã ngắt kết nối với server MQTT
 login.listenMqttCloseByUser=Đã ngắt kết nối với server MQTT bởi người dùng
 login.retryCheckLiveCookie=Đang kiểm tra lại cookie... %1
+login.startBotSuccess=Đã khởi động bot thành công, bắt đầu nhận tin nhắn từ người dùng
 
 version.tooOldVersion=Bạn đang sử dụng phiên bản quá cũ của Goat-Bot, vui lòng cập nhật lên phiên bản mới nhất bằng cách gõ lệnh: %1 vào cmd/console/terminal/shell
 
@@ -124,6 +125,7 @@ indexController.connectMySQLSuccess=Đã kết nối cơ sở dữ liệu SQLITE
 indexController.connectMySQLError=Đã xảy ra lỗi khi kết nối cơ sở dữ liệu SQLITE:
 
 # updater.js
+updater.updateTooFast=Vui lòng đợi ít nhất 5 phút sau khi commit mới nhất để update không bị lỗi, còn %1 phút %2 giây nữa
 updater.latestVersion=Bạn đang sử dụng phiên bản mới nhất
 updater.cantFindVersion=Bạn đang sử dụng phiên bản không xác định (%1), vui lòng kiểm tra lại tệp package.json của bạn
 updater.newVersions=Có %1 phiên bản cần cập nhật mới, bất đầu tiến hành cập nhật...

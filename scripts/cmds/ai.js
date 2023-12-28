@@ -1,48 +1,44 @@
-const axios = require("axios");
 
-const PREFIX = "ai";
-const API_URL = "https://ai.tantrik-apis.repl.co/gpt";
-const API_KEY = "oMAoQOWiawBexKnW";
+const axios = require('axios');
+
+const prefixes = ['ai']; // Only 'ai' as the prefix
 
 module.exports = {
   config: {
-    name: "ai",
-    aliases: ["ai"],
-    version: "1.0",
-    author: "Team vortex/modified by coffee ☕",
-    shortDescription: "Ask a question to GPT-3.5.",
-    longDescription: "Ask a question to GPT-3.5 using the provided API.",
-    category: "ai",
-    guide: { en: "{pn} [question]" },
+    name: 'ai',
+    version: 1.0,
+    author: 'OtinXSandip',
+    longDescription: 'AI',
+    category: 'ai',
+    guide: { en: '{p} questions' },
   },
-
-  onStart: async () => {},
-  onChat: async ({ api, event, args, message }) => {
+  onStart: async () => {
+    // Add any initialization logic here if needed.
+  },
+  onChat: async ({ api, event, message }) => {
     try {
-      if (event.body?.toLowerCase().startsWith(PREFIX)) {
-        const question = event.body.substring(PREFIX.length).trim();
-        if (!question) {
-          message.reply("Please provide a question to ask GPT.");
-        } else {
-          message.reply("🕰 | Searching for an answer...");
-          const gptAnswer = await getGPTAnswer(question);
-          message.reply(gptAnswer);
-        }
+      const a = 'repl'; // Set the desired value for 'a'
+      const prefix = prefixes.find((p) => event.body?.toLowerCase()?.startsWith(p));
+
+      if (!prefix) return; // Invalid prefix, ignore the command
+
+      const prompt = event.body.slice(prefix.length).trim();
+
+      if (!prompt) {
+        await message.reply('Please provide questions 🦥');
+        return;
       }
+
+      api.setMessageReaction('👅', event.messageID, () => {}, true);
+
+      const { data: { answer } } = await axios.get(
+        `https://sdxl.otinxsandeep.${a}.co/gpt?prompt=${encodeURIComponent(prompt)}`
+      );
+
+      api.setMessageReaction('✅', event.messageID, () => {}, true);
+      await message.reply(answer);
     } catch (error) {
-      console.error(error);
-      message.reply("Error while fetching the GPT response.");
+      console.error('Error:', error.message);
     }
   },
 };
-
-async function getGPTAnswer(question) {
-  const { data } = await axios.get(API_URL, {
-    params: {
-      query: encodeURIComponent(question),
-      apikey: API_KEY,
-    },
-  });
-  const gptAnswer = data.chatGPT;
-  return gptAnswer;
-}
