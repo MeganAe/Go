@@ -32,7 +32,7 @@ module.exports = {
       vi: "",
       en: ""
     },
-    category: "games",
+    category: "fun",
     guide: {
       en: "{pn} <category>\n{pn} rank\n-view your rank\n{pn} leaderboard\n-view top players\nto submit a bug report or feedback\n\n just type:\nquizr <your message>\n"
     },

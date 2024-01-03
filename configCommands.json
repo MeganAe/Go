@@ -38,7 +38,6 @@
   },
   "commandUnload": [
     "prodia.js",
-    "quiz.js",
     "ai2.js"
   ]
 }
