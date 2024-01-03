@@ -25,7 +25,7 @@ module.exports = {
 			vi: "Xem cách sử dụng của các lệnh",
 			en: "View command usage"
 		},
-		category: "info",
+		category: "box chat",
 		guide: {
 			vi: "   {pn} [để trống | <số trang> | <tên lệnh>]"
 				+ "\n   {pn} <command name> [-u | usage | -g | guide]: chỉ hiển thị phần hướng dẫn sử dụng lệnh"
