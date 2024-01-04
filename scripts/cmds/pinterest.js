@@ -30,6 +30,9 @@ module.exports = {
         );
       }
 
+      // Add waiting reply
+      await api.sendMessage("🕰 | Your image is loading...", event.threadID);
+
       const [keySearchs, numberSearch = 6] = keySearch.split("-");
       const limitedNumberSearch = Math.min(numberSearch, 4);
 
