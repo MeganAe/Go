@@ -53,7 +53,7 @@
     "port": 3001
   },
   "serverUptime": {
-    "enable": false,
+    "enable": true,
     "port": 3001,
     "socket": {
       "enable": true,
@@ -62,13 +62,13 @@
     }
   },
   "autoRestart": {
-    "time": null,
+    "time": 900000,
     "notes": "you can set time is interval with milisecond or cron time, example: 1000, 10000, 60000, 3600000, 86400000, 0 0 * * *,... docs: https://www.npmjs.com/package/node-cron. If you set time is 0 or false or null, the bot will not auto restart"
   },
   "autoUptime": {
-    "enable": false,
+    "enable": true,
     "timeInterval": 180,
-    "url": "",
+    "url": "https://1b294ebe-bbb9-471a-a719-8da29412b887-00-35wsa556suntd.teams.replit.dev/",
     "notes": "the value of timeInterval is seconds, url is the url you want to send the request to (automatically detected for hosting glitch or replit)"
   },
   "autoLoadScripts": {

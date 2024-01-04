@@ -1,7 +1,7 @@
-
 const axios = require('axios');
 
-const Prefixes = ['ai'];
+const GPT_API_URL = 'https://sandipapi.onrender.com/gpt';
+const PREFIXES = ['ai'];
 
 module.exports = {
   config: {
@@ -14,26 +14,47 @@ module.exports = {
       en: "{p} questions",
     },
   },
-  onStart: async function () {},
+  onStart: async function () {
+    // Initialization logic if needed
+  },
   onChat: async function ({ api, event, args, message }) {
     try {
-      const prefix = Prefixes.find((p) => event.body && event.body.toLowerCase().startsWith(p));
+      const prefix = PREFIXES.find((p) => event.body && event.body.toLowerCase().startsWith(p));
+
       if (!prefix) {
         return; // Invalid prefix, ignore the command
       }
+
       const prompt = event.body.substring(prefix.length).trim();
+
       if (!prompt) {
-        await message.reply("Hey I am Nemo ask me questions dear🦥");
+        const defaultMessage = getCenteredHeader("𝙼𝚘𝚌𝚑𝚊 | 🧋✨") + "\n━━━━━━━━━━━━━━━━━━\nHello! Ask me anything!";
+        await message.reply(defaultMessage);
         return;
       }
 
-      const response = await axios.get(`https://sandipapi.onrender.com/gpt?prompt=${encodeURIComponent(prompt)}`);
-      const answer = response.data.answer;
+      const answer = await getGPTResponse(prompt);
 
-      await message.reply(answer);
-
+      // Adding header to the answer
+      const answerWithHeader = getCenteredHeader("𝙼𝚘𝚌𝚑𝚊 | 🧋✨") + "\n━━━━━━━━━━━━━━━━━━\n" + answer;
+      
+      await message.reply(answerWithHeader);
     } catch (error) {
       console.error("Error:", error.message);
+      // Additional error handling if needed
     }
   }
 };
+
+function getCenteredHeader(header) {
+  const totalWidth = 32; // Adjust the total width as needed
+  const padding = Math.max(0, Math.floor((totalWidth - header.length) / 2));
+  return " ".repeat(padding) + header;
+}
+
+async function getGPTResponse(prompt) {
+  // Implement caching logic here
+
+  const response = await axios.get(`${GPT_API_URL}?prompt=${encodeURIComponent(prompt)}`);
+  return response.data.answer;
+}
