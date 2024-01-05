@@ -53,7 +53,7 @@
     "port": 3001
   },
   "serverUptime": {
-    "enable": true,
+    "enable": false,
     "port": 3001,
     "socket": {
       "enable": true,
