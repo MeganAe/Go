@@ -23,6 +23,7 @@
     "express-rate-limit": "^6.5.2",
     "express-session": "^1.17.3",
     "form-data": "^4.0.0",
+    "fs": "^0.0.1-security",
     "fs-extra": "^11.1.0",
     "googleapis": "^100.0.0",
     "gradient-string": "^2.0.2",
@@ -38,7 +39,9 @@
     "ora": "^5.4.1",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
+    "pastebin-api": "^7.0.0",
     "path": "^0.12.7",
+    "perf_hooks": "^0.0.1",
     "qrcode-reader": "^1.0.4",
     "qs": "^6.11.0",
     "request": "^2.88.2",
@@ -48,7 +51,9 @@
     "sqlite3": "^5.0.5",
     "tinyurl": "^1.1.7",
     "totp-generator": "^0.0.13",
-    "websocket-stream": "^5.5.2"
+    "ultimate-guitar": "^1.0.3",
+    "websocket-stream": "^5.5.2",
+    "yt-search": "^2.10.4"
   },
   "scripts": {
     "start": "node index.js",
