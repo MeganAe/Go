@@ -2,6 +2,7 @@ const axios = require('axios');
 
 const GPT_API_URL = 'https://sandipapi.onrender.com/gpt';
 const PREFIXES = ['ai'];
+const horizontalLine = "━━━━━━━━━━━━━━━";
 
 module.exports = {
   config: {
@@ -28,15 +29,15 @@ module.exports = {
       const prompt = event.body.substring(prefix.length).trim();
 
       if (!prompt) {
-        const defaultMessage = getCenteredHeader("𝙼𝚘𝚌𝚑𝚊 | 🧋✨") + "\n━━━━━━━━━━━━━━━━━━\nHello! Ask me anything!";
+        const defaultMessage = getCenteredHeader("𝙼𝚘𝚌𝚑𝚊 | 🧋✨") + "\n" + horizontalLine + "\nHello! Ask me anything!\n" + horizontalLine;
         await message.reply(defaultMessage);
         return;
       }
 
       const answer = await getGPTResponse(prompt);
 
-      // Adding header to the answer
-      const answerWithHeader = getCenteredHeader("𝙼𝚘𝚌𝚑𝚊 | 🧋✨") + "\n━━━━━━━━━━━━━━━━━━\n" + answer;
+      // Adding header and horizontal lines to the answer
+      const answerWithHeader = getCenteredHeader("𝙼𝚘𝚌𝚑𝚊 | 🧋✨") + "\n" + horizontalLine + "\n" + answer + "\n" + horizontalLine;
       
       await message.reply(answerWithHeader);
     } catch (error) {
