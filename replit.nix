@@ -1,5 +1,6 @@
 { pkgs }: {
 	deps = [
+   pkgs.tmux
 		pkgs.nodejs-16_x
 		pkgs.nodePackages.typescript-language-server
 		pkgs.libuuid
