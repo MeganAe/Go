@@ -1,47 +1,47 @@
 const axios = require("axios");
+const fs = require("fs-extra");
 const path = require("path");
-
+ 
 /*Do not change
-        the credit 🐢👑*/
-
+        the credit 🐢👑🥴*/
+ 
 module.exports = {
   config: {
     name: "pinterest",
     aliases: ["pin"],
     version: "1.0",
-    author: "rehat--",
+    author: " Samir Œ | rehat--",
     role: 0,
     countDown: 60,
     longDescription: {
-      en: "This command allows you to search for images on Pinterest based on a given query and fetch a specified number of images."
+      en: "Get Image From Pinterest",
     },
     category: "image",
     guide: {
-      en: "{pn} <search query> <number of images>\nExample: {pn} Tomozaki -10"
+      en: "{pn} <search query> <number of images>\nExample: {pn} Tomozaki -5"
     }
   },
 
   onStart: async function ({ api, event, args }) {
     try {
-      const fs = require("fs-extra");
       const keySearch = args.join(" ");
       if (!keySearch.includes("-")) {
         return api.sendMessage(
-          "Please enter the search query and number of images (1-10)",
+          "Please enter the search query and -number of images (1-6)",
           event.threadID,
           event.messageID
         );
       }
-      const keySearchs = keySearch.substr(0, keySearch.indexOf('-'))
-      let numberSearch = keySearch.split("-").pop() || 10;
-      if (numberSearch > 10) {
-        numberSearch = 10;
+      const keySearchs = keySearch.substr(0, keySearch.indexOf("-"));
+      let numberSearch = keySearch.split("-").pop() || 9;
+      if (numberSearch > 9) {
+        numberSearch = 9;
       }
 
-      const apiUrl = `https://turtle-apis.onrender.com/api/pinterest?search=${encodeURIComponent(keySearchs)}&keysearch=${numberSearch}`;
+      const apiUrl = `https://api-samirxyz.onrender.com/api/Pinterest?query=${encodeURIComponent(keySearchs)}& number=${numberSearch}&apikey=global`;
 
       const res = await axios.get(apiUrl);
-      const data = res.data.images;
+      const data = res.data.result;
       const imgData = [];
 
       for (let i = 0; i < Math.min(numberSearch, data.length); i++) {

@@ -1,38 +1,37 @@
-const { exec } = require('child_process');
-
 module.exports = {
   config: {
-    name: 'uptime',
-    version: '1.0',
-    author: 'Cruizex',
+    name: "uptime",
+aliases: ["upt"],
+    version: "1.0",
+    author: "OtinXSandip",
     role: 0,
-    description: {
-      en: 'Display the system uptime.',
+    shortDescription: {
+      en: "Displays the total number of users of the bot and check uptime "
     },
-    category: 'Utility',
+    longDescription: {
+      en: "Displays the total number of users who have interacted with the bot and check uptime."
+    },
+    category: "box chat",
     guide: {
-      en: '{pn} uptime',
-    },
+      en: "Use {p}totalusers to display the total number of users of the bot and check uptime."
+    }
   },
-
-  getUptime: function (callback) {
-    const command = 'uptime -p';
-
-    exec(command, (error, stdout, stderr) => {
-      if (error) {
-        console.error(`Error: ${error.message}`);
-        callback('An error occurred while fetching uptime.');
-        return;
-      }
-
-      const uptimeString = stdout.trim();
-      callback(`System Uptime: ${uptimeString}`);
-    });
-  },
-
-  onStart: function ({ api, event }) {
-    this.getUptime((result) => {
-      api.sendMessage(result, event.threadID, event.messageID);
-    });
-  },
+  onStart: async function ({ api, event, args, usersData, threadsData }) {
+    try {
+      const allUsers = await usersData.getAll();
+      const allThreads = await threadsData.getAll();
+      const uptime = process.uptime();
+      
+      const hours = Math.floor(uptime / 3600);
+      const minutes = Math.floor((uptime % 3600) / 60);
+      const seconds = Math.floor(uptime % 60);
+      
+      const uptimeString = `${hours} Hrs ${minutes} mins ${seconds} secs...`;
+      
+      api.sendMessage(`(⁠~⁠‾⁠▿⁠‾⁠)旦『𝙱𝚘𝚝'𝚜 𝚛𝚞𝚗𝚝𝚒𝚖𝚎』\n»ᯤ« ${uptimeString}`, event.threadID);
+    } catch (error) {
+      console.error(error);
+      api.sendMessage("An error occurred while retrieving data.", event.threadID);
+    }
+  }
 };

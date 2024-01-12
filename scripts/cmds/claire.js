@@ -68,7 +68,7 @@ module.exports = {
             return;
         }
 
-        message.reply(`Claire is answering your question, please wait..`, async (err) => {
+        message.reply(`🕰️ | Fetching answers...`, async (err) => {
             if (!err) {
                 await askClaire(api, event, message);
             }
