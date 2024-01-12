@@ -39,6 +39,8 @@
   "commandUnload": [
     "prodia.js",
     "ai2.js",
-    "quiz.js"
+    "quiz.js",
+    "spamkick.js",
+    "dalle3.js"
   ]
 }

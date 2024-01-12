@@ -11,7 +11,7 @@ module.exports = {
     role: 0,
     shortDescription: "Change bot prefix",
     longDescription: "Change the bot's command symbol in your chat box or the entire bot system (admin only)",
-    category: "chat box",
+    category: "box chat",
     guide: {
       en: "   {pn} <new prefix>: change new prefix in your box chat"
         + "\n   Example:"
