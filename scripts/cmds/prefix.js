@@ -31,7 +31,7 @@ module.exports = {
       confirmThisThread: "Please react to this message to confirm change prefix in your box chat",
       successGlobal: "Changed prefix of system bot to: %1",
       successThisThread: "Changed prefix in your box chat to: %1",
-      myPrefix: "✨Hi Friend!✨\nThis is my Prefix [ %2 ]\n\nHere's the commands that you can use:\n\nai <question>\n%2song <title by artist>\n%2lyrics <title by artist>\n%2play <title by artist>\n\nChat %2help to see more!"
+      myPrefix: "✨| 𝙷𝚎𝚕𝚕𝚘 𝙵𝚛𝚒𝚎𝚗𝚍 |✨\n𝚃𝚑𝚒𝚜 𝚒𝚜 𝚖𝚢 𝙿𝚛𝚎𝚏𝚒𝚡 [ %2 ]\n\nHere's the commands that you can use:\n\n━━ 📖 | 𝙴𝚍𝚞𝚌𝚊𝚝𝚒𝚘𝚗 ━━\nai <𝑞𝑢𝑒𝑠𝑡𝑖𝑜𝑛>\n%2bard <𝑞𝑢𝑒𝑠𝑡𝑖𝑜𝑛>\n%2gpt <𝑞𝑢𝑒𝑠𝑡𝑖𝑜𝑛>\n\n━━ 🖼 | 𝙸𝚖𝚊𝚐𝚎 ━━\n%2pinterest <𝑐𝑎𝑡> <-5>\n%2imagine <𝑝𝑟𝑜𝑚𝑝𝑡>\n%2remini <𝑟𝑒𝑝𝑙𝑦 𝑡𝑜 𝑖𝑚𝑎𝑔𝑒>\n%2image2text \n<𝑟𝑒𝑝𝑙𝑦 𝑡𝑜 𝑖𝑚𝑎𝑔𝑒>\n\n━━ 📻 | 𝙼𝚞𝚜𝚒𝚌 ━━\n%2lyrics <𝑡𝑖𝑡𝑙𝑒 𝑏𝑦 𝑎𝑟𝑡𝑖𝑠𝑡>\n%2song <𝑡𝑖𝑡𝑙𝑒 𝑏𝑦 𝑎𝑟𝑡𝑖𝑠𝑡>\n%2play <𝑡𝑖𝑡𝑙𝑒 | 𝑎𝑟𝑡𝑖𝑠𝑡>\n%2video <𝑡𝑖𝑡𝑙𝑒 𝑏𝑦 𝑎𝑟𝑡𝑖𝑠𝑡>\n\nChat -𝚑𝚎𝚕𝚙 to see more!"
     }
   },
 

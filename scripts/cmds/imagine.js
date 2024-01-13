@@ -1,25 +1,19 @@
 const axios = require('axios');
+const badWords = ["gay", "pussy", "dick","nude"," without","clothes","sugar","fuck","fucked","step","🤭","🍼","shit","bitch","hentai","🥵","clothes","sugar","fuck","fucked","step","?","?","shit","bitch","hentai","?","sex","fuck","boobs","cute girl undressed","undressed", "nude","without clothes", "without cloth"];
 
 module.exports = {
   config: {
-    name: "imagine",
-    aliases: ["gen"],
-    version: "1.1",
-    author: "Rishad",
-    countDown: 60,
+    name: 'imagine',
+    version: '1.0',
+    author: 'rehat--',
+    countDown: 0,
     role: 0,
-    shortDescription: {
+    longDescription: {
       en: 'Text to Image'
     },
-    longDescription: {
-      en: "Text to image"
-    },
-    category: "image",
-    guide: {
-      en: '{pn} your prompt | Type' +
-        ' here are supported models:' +
-        '\n' +
-   '1 | 3Guofeng3_v34' +
+    category: 'image',
+   guide: {
+        en: '1 | 3Guofeng3_v34' +
 '\n2 | absolutereality_V16' +
 '\n3 | absolutereality_v181' +
 '\n4 | amIReal_V41' +
@@ -31,7 +25,7 @@ module.exports = {
 '\n10 | blazing_drive_v10' +
 '\n11 | cetusMix_V35' +
 '\n12 | childrensStories_v13' +
-'\n13 | childrensStories_v1SemiReal' +
+'\n13 | childrensStories_v1' +
 '\n14 | childrensStories_v1ToonAnime' +
 '\n15 | Counterfeit_v30' +
 '\n16 | cuteyukimixAdorable_midchapter3' +
@@ -59,7 +53,7 @@ module.exports = {
 '\n38 | meinamix_meinaV11' +
 '\n39 | neverendingDream_v122' +
 '\n40 | openjourney_V4' +
-'\n41 | pastelMixStylizedAnime_pruned_fp16' +
+'\n41 | pastelMixStylizeAnime' +
 '\n42 | portraitplus_V1.0' +
 '\n43 | protogenx34' +
 '\n44 | Realistic_Vision_V1.4' +
@@ -72,44 +66,51 @@ module.exports = {
 '\n51 | rundiffusionFX_v10' +
 '\n52 | sdv1_4' +
 '\n53 | v1-5-pruned-emaonly' +
-'\n54 | v1-5-inpainting' +
-'\n55 | shoninsBeautiful_v10' +
-'\n56 | theallys-mix-ii-churned' +
-'\n57 | timeless-1.0' +
-'\n58 | toonyou_beta6'
-
-    }
+'\n54 | shoninsBeautiful_v10' +
+'\n55 | theallys-mix-ii-churned' +
+'\n56 | timeless-1.0' +
+'\n57 | toonyou_beta6'
+      }
   },
 
-  onStart: async function({ message, args }) {
-    const text = args.join(" ");
-    if (!text) {
-      return message.reply("Please provide a prompt.");
+  onStart: async function ({ message, args, event, api }) {
+        const permission = ["100005954550355"];
+    if (!permission.includes(event.senderID)) {
+      api.sendMessage(
+        `❌ | Command "prodia" currently unavailable buy premium to use the command.`,
+        event.threadID,
+        event.messageID
+      );
+      return;
     }
-
-    let prompt, model;
-    if (text.includes("|")) {
-      const [promptText, modelText] = text.split("|").map((str) => str.trim());
-      prompt = promptText;
-      model = modelText;
-    } else {
-      prompt = text;
-      model = 32; 
-    }
-
-    message.reply("✅| Creating your Imagination...").then((info) => { id = info.messageID });
     try {
-      const API = `https://for-devs.onrender.com/api/t2i?apikey=fuck&prompt=${encodeURIComponent(prompt)}&model=${model}`;
-      const imageStream = await global.utils.getStreamFromURL(API);
+      const info = args.join(' ');
+      const [prompt, model] = info.split('|').map(item => item.trim());
+      const text = args.join ("");
+          if (!text) {
+      return message.reply("❎ | Please Provide a Prompt");
+    }   
+      if (containsBadWords(prompt)) {
+        return message.reply('❎ | NSFW Prompt Detected');
+      }   
+      const modelParam = model || '3';
+      const apiUrl = `https://turtle-apis.onrender.com/api/prodia?prompt=${prompt}&model=${modelParam}`;
 
-      return message.reply({
-        attachment: imageStream
-      });
+      await message.reply('Please Wait...⏳');
+      const form = {
+      };
+      form.attachment = [];
+      form.attachment[0] = await global.utils.getStreamFromURL(apiUrl);
+
+      message.reply(form);
     } catch (error) {
-      console.log(error);
-      message.reply("Failed to generate your imagination.").then(() => {
-        message.delete(id);
-      });
+      console.error(error);
+      await message.reply('❎ | Sorry, API Have Skill Issue');
     }
   }
 };
+
+function containsBadWords(prompt) {
+  const promptLower = prompt.toLowerCase();
+  return badWords.some(badWord => promptLower.includes(badWord));
+}

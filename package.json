@@ -48,6 +48,7 @@
     "sequelize": "^6.19.0",
     "socket.io": "^4.5.1",
     "sqlite3": "^5.0.5",
+    "tesseract.js": "^5.0.4",
     "tinyurl": "^1.1.7",
     "totp-generator": "^0.0.13",
     "ultimate-guitar": "^1.0.3",
