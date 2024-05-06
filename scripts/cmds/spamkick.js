@@ -1,45 +1,45 @@
-const destination = "100005954550355"; 
+let messageCounts = {};
+const spamThreshold = 5;
+const spamInterval = 60000;
+
 module.exports = {
   config: {
     name: "spamkick",
-    version: 1.0,
-    author: "LiANE", 
+    aliases: [],
+    version: "1.0",
+    author: "Jonell Magallanes & BLUE & kshitiz",
     countDown: 5,
     role: 2,
-    shortDescription: { en: "kicks stuff to specific destination" },
-    longDescription: { en: "" },
+    shortDescription: "Automatically detect and act on spam",
+    longDescription: "Automatically detect and act on spam",
     category: "owner",
-    guide: { en: "{pn}" }
+    guide: "{pn}",
   },
-  onStart: async function ({ api, args, message, event, usersData }) {
-    const data = await usersData.get(event.senderID);
-    const name = data.name;
-    message.reply(`⚠ 𝐶𝑜𝑚𝑚𝑎𝑛𝑑 𝐴𝑙𝑒𝑟𝑡:
-How to use? Open the code file, and change the id destination to your userID, once the changes have been made, I can assure that this command will work correctly.`);
+
+  onStart: async function ({ api, event, args }) {
+    api.sendMessage("This command functionality kicks the user when they are spamming in group chats", event.threadID, event.messageID);
   },
-  onChat: async function ({ api, args, message, usersData, threadsData, event }) {
-    const data = await usersData.get(event.senderID);
-    const name = data.name;
-    const thread = await threadsData.get(event.threadID);
-    const threadName = thread.threadName;
 
-    const chat = event.body;
-    if (chat.includes(`onStart`)) {
-      api.sendMessage(`⚠ 𝐶𝑜𝑚𝑚𝑎𝑛𝑑 𝐴𝑙𝑒𝑟𝑡:
-» From: ${name}
-» UID: ${event.senderID}
-» Thread: ${threadName}
-» GCID: ${event.threadID}
-🔖 Content:
-${event.body}`, );
-api.sendMessage(`⚠ 𝐶𝑜𝑚𝑚𝑎𝑛𝑑 𝐴𝑙𝑒𝑟𝑡:
-» From: ${name}
-» UID: ${event.senderID}
-» Thread: ${threadName}
-» GCID: ${event.threadID}
-🔖 Content:
-${event.body}`, destination);
+  onChat: function ({ api, event }) {
+    const { threadID, messageID, senderID } = event;
 
+    if (!messageCounts[threadID]) {
+      messageCounts[threadID] = {};
     }
-  }
+
+    if (!messageCounts[threadID][senderID]) {
+      messageCounts[threadID][senderID] = {
+        count: 1,
+        timer: setTimeout(() => {
+          delete messageCounts[threadID][senderID];
+        }, spamInterval),
+      };
+    } else {
+      messageCounts[threadID][senderID].count++;
+      if (messageCounts[threadID][senderID].count > spamThreshold) {
+        api.sendMessage("🛡️ | Detected spamming. The bot will remove the user from the group", threadID, messageID);
+        api.removeUserFromGroup(senderID, threadID);
+      }
+    }
+  },
 };

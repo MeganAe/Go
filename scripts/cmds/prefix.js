@@ -4,14 +4,14 @@ const { utils } = global;
 module.exports = {
   config: {
     name: "prefix",
-    alias: ["🧋"], 
+    alias: [""], 
     version: "1.3",
     author: "NTKhang",
     countDown: 5,
     role: 0,
     shortDescription: "Change bot prefix",
     longDescription: "Change the bot's command symbol in your chat box or the entire bot system (admin only)",
-    category: "box chat",
+    category: "chat box",
     guide: {
       en: "   {pn} <new prefix>: change new prefix in your box chat"
         + "\n   Example:"
@@ -31,7 +31,7 @@ module.exports = {
       confirmThisThread: "Please react to this message to confirm change prefix in your box chat",
       successGlobal: "Changed prefix of system bot to: %1",
       successThisThread: "Changed prefix in your box chat to: %1",
-      myPrefix: "✨| 𝙷𝚎𝚕𝚕𝚘 𝙵𝚛𝚒𝚎𝚗𝚍 |✨\n𝚃𝚑𝚒𝚜 𝚒𝚜 𝚖𝚢 𝙿𝚛𝚎𝚏𝚒𝚡 [ %2 ]\n\nHere's the commands that you can use:\n\n━━ 📖 | 𝙴𝚍𝚞𝚌𝚊𝚝𝚒𝚘𝚗 ━━\nai <𝑞𝑢𝑒𝑠𝑡𝑖𝑜𝑛>\n%2bard <𝑞𝑢𝑒𝑠𝑡𝑖𝑜𝑛>\n%2liner <𝑞𝑢𝑒𝑠𝑡𝑖𝑜𝑛>\n%2gpt <𝑞𝑢𝑒𝑠𝑡𝑖𝑜𝑛>\n\n━━ 🖼 | 𝙸𝚖𝚊𝚐𝚎 ━━\n%2pinterest <𝑐𝑎𝑡> <-5>\n%2imagine <𝑝𝑟𝑜𝑚𝑝𝑡>\n%2prodia <𝑝𝑟𝑜𝑚𝑝𝑡>\n%2remini <𝑟𝑒𝑝𝑙𝑦 𝑡𝑜 𝑖𝑚𝑎𝑔𝑒>\n%2image2text \n<𝑟𝑒𝑝𝑙𝑦 𝑡𝑜 𝑖𝑚𝑎𝑔𝑒>\n\n━━ 📻 | 𝙼𝚞𝚜𝚒𝚌 ━━\n%2lyrics <𝑡𝑖𝑡𝑙𝑒 𝑏𝑦 𝑎𝑟𝑡𝑖𝑠𝑡>\n%2song <𝑡𝑖𝑡𝑙𝑒 𝑏𝑦 𝑎𝑟𝑡𝑖𝑠𝑡>\n%2play <𝑡𝑖𝑡𝑙𝑒 | 𝑎𝑟𝑡𝑖𝑠𝑡>\n%2video <𝑡𝑖𝑡𝑙𝑒 𝑏𝑦 𝑎𝑟𝑡𝑖𝑠𝑡>\n\nChat -𝚑𝚎𝚕𝚙 to see more!"
+      myPrefix: "✨Hi Friend!✨\nThis is my Prefix [ %2 ]\n\nHere's the commands that you can use:\n\nai <question>\n%2song <title by artist>\n%2lyrics <title by artist>\n%2play <title by artist>\n\nChat %2help to see more!"
     }
   },
 
@@ -81,7 +81,7 @@ module.exports = {
   },
 
   onChat: async function ({ event, message, getLang }) {
-    if (event.body && (event.body.toLowerCase() === "prefix" || event.body.toLowerCase() === "🧋"))
+    if (event.body && (event.body.toLowerCase() === "prefix" || event.body.toLowerCase() === ""))
       return () => {
         return message.reply(getLang("myPrefix", global.GoatBot.config.prefix, utils.getPrefix(event.threadID)));
       };
