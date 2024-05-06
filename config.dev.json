@@ -24,8 +24,8 @@
     "whiteListIds": [],
     "notes": "if you enable this feature, only the ids in the whiteListIds section can use the bot"
   },
-  "nickNameBot": "𝙈𝙀𝙂𝘼𝙉-𝘼𝙀 | 🧋✨",
-  "prefix": ">",
+  "nickNameBot": "𝗔𝗡𝗢𝗧𝗛𝗘𝗥-𝗠𝗘| 🧋✨",
+  "prefix": "<",
   "database": {
     "type": "sqlite",
     "uriMongodb": "",
