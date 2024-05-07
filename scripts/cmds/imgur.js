@@ -15,6 +15,7 @@ module.exports = {
   },
 
   onStart: async function ({ message, api, event }) {
+
     const puti = event.messageReply?.attachments[0]?.url;
 
     if (!puti) {
@@ -27,7 +28,7 @@ module.exports = {
       return message.reply(lado);
     } catch (error) {
       console.error(error);
-      return message.reply('api sucks bro.');
+      return message.reply('API Error bro.');
     }
   }
 };
