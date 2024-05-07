@@ -13,7 +13,7 @@ module.exports = {
     longDescription: {
       en: "Get a random riddle and try to solve it!"
     },
-    category: "fun",
+    category: "game",
     guide: {
       en: "{prefix}riddle"
     }
@@ -28,7 +28,8 @@ module.exports = {
   },
 
   onStart: async function ({ api, event }) {
-    const { threadID } = event;
+    const { threadID, messageID } = event;
+    const timeout = 60;
 
     try {
       const response = await axios.get('https://riddles-api.vercel.app/random');
@@ -36,25 +37,20 @@ module.exports = {
       const { riddle, answer } = riddleData;
 
       const msg = {
-        body: `🤔 Here's a riddle for you:\n\n${riddle}\n\nGood luck guessing the answers!\n\nReply to this message to know the answer.`,
+        body: `🤔 Here's a riddle for you:\n\n${riddle}\n\nGood luck guessing the answers!\n\nReply this message to know the answer.`
       };
 
       api.sendMessage(msg, threadID, async (error, info) => {
-        if (error) {
-          console.error("Error sending message:", error);
-        } else {
-          global.GoatBot.onReply.set(info.messageID, {
-            type: "reply",
-            commandName: "riddle",
-            author: event.senderID,
-            messageID: info.messageID,
-            answer,
-          });
-        }
+        global.GoatBot.onReply.set(info.messageID, {
+          type: "reply",
+          commandName: "riddle",
+          author: event.senderID,
+          messageID: info.messageID,
+          answer,
+        });
       });
     } catch (error) {
-      console.error("Error fetching riddle:", error);
-      api.sendMessage("Sorry, there was an issue fetching the riddle. Please try again later.", threadID);
+      console.error("Error Occurred:", error);
     }
   }
 };

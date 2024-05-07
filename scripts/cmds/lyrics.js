@@ -1,45 +1,25 @@
-const axios = require("axios");
+const axios = require('axios');
 
 module.exports = {
   config: {
     name: "lyrics",
+    aliases: ["lyrics"],
     version: "1.0",
-    author: "rulex-al/loufi",
+    author: "otttinneeeey",
     countDown: 5,
     role: 0,
-    shortDescription: {
-      en: "Get lyrics for a song",
-    },
-    longDescription: {
-      en: "This command allows you to get the lyrics for a song. Usage: !lyrics <song name>",
-    },
-    category: "music",
-    guide: {
-      en: "{prefix}lyrics <song name>",
-    },
+    shortDescription: "song lyrics",
+    longDescription: "song lyrics",
+    category: "media",
+    guide: "{pn} "
   },
 
-  onStart: async function ({ api, event, args }) {
-    const songName = args.join(" ");
-    if (!songName) {
-      api.sendMessage("Please provide a song name!", event.threadID, event.messageID);
-      return;
-    }
-
-    const apiUrl = `https://lyrist.vercel.app/api/${encodeURIComponent(songName)}`;
-    try {
-      const response = await axios.get(apiUrl);
-      const { lyrics, title, artist } = response.data;
-
-      if (!lyrics) {
-        api.sendMessage(`Sorry, lyrics for "${title}" by ${artist} not found!`, event.threadID, event.messageID);
-      } else {
-        const formattedLyrics = `🎧 | Title: ${title}\n🎤 | Artist: ${artist}\n\n${lyrics}`;
-        api.sendMessage(formattedLyrics, event.threadID, event.messageID);
-      }
-    } catch (error) {
-      console.error(error);
-      api.sendMessage(`Sorry, there was an error getting the lyrics for "${songName}"!`, event.threadID, event.messageID);
-    }
-  },
+  onStart: async function ({ api, event, message, args }) {
+        const lyricsFinder = require('lyrics-finder');
+    var artists = args.join(" "), titles = args.join(" ");
+    (async function(artist, title) {
+        let lyrics = await lyricsFinder(artist, title) || "Not Found!";
+        api.sendMessage(`${lyrics}`, event.threadID, event.messageID);
+    })(artists, titles);
+}
 };
