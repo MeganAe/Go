@@ -21,16 +21,16 @@ const fonts = {
 const Prefixes = [
   'ae',
   'ai',
-  'mitama',
+  'metoushela',
   'ask',
-  'mitantsoa', 
+  'another', 
 ];
 
 module.exports = {
   config: {
     name: "ask",
     version: 1.0,
-    author: "OtinXSandip | Aesther",
+    author: "OtinXSandip | Aesther and Metoushela",
     longDescription: "AI",
     category: "ai",
     guide: {
