@@ -31,7 +31,7 @@ module.exports = {
       }
       const prompt = event.body.substring(prefix.length).trim();
    if (!prompt) {
-        await message.reply("salut je suis Durand une Intelligence Artificielle développer par Mr Djoukam 🤖. Comment puis-je t'aider!?💬");
+        await message.reply("📝 𝗪𝗮𝗹𝗸𝗲𝗿𝗚𝗣𝗧\n━━━━━━━━━━━━━━\n\nHello! How can I assist you today.💬");
         return;
       }
 
