@@ -1,18 +1,21 @@
 const axios = require('axios');
 
 const Prefixes = [
-  'AI',
+  '%ia',
+  'ia',
+  'fatkey',
+  '%ai',
+  'another',
   'ai',
-  'megan',
-  'Ai',
+  'ask',
 ];
 
 module.exports = {
   config: {
-    name: "ai",
+    name: "ask",
     version: 1.0,
-    author: "fatkey",
-    longDescription: "chatGptAI",
+    author: "OtinXSandip",
+    longDescription: "AI",
     category: "ai",
     guide: {
       en: "{p} questions",
@@ -28,19 +31,24 @@ module.exports = {
       }
       const prompt = event.body.substring(prefix.length).trim();
    if (!prompt) {
-        await message.reply("📝 𝗪𝗮𝗹𝗸𝗲𝗿𝗚𝗣𝗧\n━━━━━━━━━━━━━━\n\nHello! How can I assist you today.⚪");
+        await message.reply("salut je suis Durand une Intelligence Artificielle développer par Mr Djoukam 🤖. Comment puis-je t'aider!?💬");
         return;
       }
 
 
-      const response = await axios.get(`https://sandipbaruwal.onrender.com/gpt?prompt=hello${encodeURIComponent(prompt)}`);
+      const response = await axios.get(`https://sandipbaruwal.onrender.com/gpt?prompt=${encodeURIComponent(prompt)}`);
       const answer = response.data.answer;
 
  
-    await message.reply(`📝 𝗪𝗮𝗹𝗸𝗲𝗿𝗚𝗣𝗧:\n━━━━━━━━━━━━━━\n${answer}\n━━━━━━━━━━━━━━\n🟢 𝘔𝘦𝘵𝘰𝘶𝘴𝘩𝘦𝘭𝘢 𝘸𝘢𝘭𝘬𝘦𝘳 ⚪`);
+    await message.reply({ body: `𝗗𝘂𝗿𝗮𝗻𝗱📩✅💯
+━━━━━━━━━━━━━━━━        
+${answer}
+━━━━━━━━━━━━━━━━
+𝗡𝗮𝘁𝘀𝘂 𝗗𝗿𝗮𝗴𝗻𝗶𝗿(𝗗𝘂𝗿𝗮𝗻𝗱) `,
+});
 
-    } catch (error) {
+   } catch (error) {
       console.error("Error:", error.message);
     }
   }
-};
+};￼Enter
