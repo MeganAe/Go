@@ -14,7 +14,7 @@
 # OWNER : Metoushela waker
 # 𝗣𝗘𝗥𝗠𝗜𝗦𝗦𝗜𝗢𝗡 𝗧𝗢 𝗙𝗢𝗥𝗞 𝗢𝗡𝗟𝗬 𝗜𝗙 𝗨 𝗥𝗘𝗦𝗣𝗘𝗖𝗧 𝗧𝗛𝗘 𝗗𝗘𝗦𝗖𝗥𝗜𝗣𝗧𝗜𝗢𝗡 𝗢𝗙 𝗧𝗛𝗘 𝗣𝗥𝗢𝗝𝗘𝗖𝗧
 # ADDED ... COMMAND 𝗦𝗧𝗜𝗟𝗘 𝗨𝗣𝗗𝗔𝗧𝗘 𝗘𝗩𝗘𝗥𝗬𝗧𝗠𝗘
-# OWNER FB LINK:https://www.facebook.com/profile.php?id=61551417118451
+# OWNER FB LINK:http// https://www.facebook.com/profile.php?id=61561199641686
 Developpeur 𝗜𝗗 💬
 61551417118451
 # IMPORTANT TIPS
