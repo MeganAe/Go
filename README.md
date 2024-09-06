@@ -4,7 +4,7 @@
 <h1 align="center"><img src="./dashboard/images/logo-non-bg.png" width="22px"> 
 
 # FB PROFILE PHOTO</h1>
-<img src="https://i.ibb.co/2yz2RJN/439972624.jpg" alt="banner">
+<img src="./dashboard/images/metoushela.jpg" alt="banner">
 <h1 align="center"><img src="./dashboard/images/logo-non-bg.png" width="22px"> 
  
   # ANOTHER-ME- ABOUT PROJECT INFORMATION</h1>
