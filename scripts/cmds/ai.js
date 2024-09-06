@@ -1,4 +1,4 @@
-#cmd install ai.js const axios = require('axios');
+const axios = require('axios');
 
 async function fetchFromAI(url, params) {
   try {
@@ -12,7 +12,10 @@ async function fetchFromAI(url, params) {
 
 async function getAIResponse(input, userId, messageID) {
   const services = [
-     { url: 'https://metoushela-rest-api-tp5g.onrender.com/api/gpt4o?', params: { context: input } }
+    { url: 'https://ai-tools.replit.app/gpt', params: { prompt: input, uid: userId } },
+    { url: 'https://openaikey-x20f.onrender.com/api', params: { prompt: input } },
+    { url: 'http://fi1.bot-hosting.net:6518/gpt', params: { query: input } },
+    { url: 'https://ai-chat-gpt-4-lite.onrender.com/api/hercai', params: { question: input } }
   ];
 
   let response = "Hey salut ʚɸɞ Métöushela ʚɸɞ 👋🏾! Belle journée, pas vrai ? Pose ta question 💭, je serai ravie de t'aider.💜✏";
@@ -42,12 +45,12 @@ module.exports = {
   onStart: async function ({ api, event, args }) {
     const input = args.join(' ').trim();
     if (!input) {
-      api.sendMessage(`📑 𝙿𝚕𝚎𝚊𝚜𝚎 𝚙𝚛𝚘𝚟𝚒𝚍𝚎 a 𝚚𝚞𝚎𝚜𝚝𝚒𝚘𝚗 𝚘𝚛 𝚜𝚝𝚊𝚝𝚎𝚖𝚎𝚗𝚝. `, event.threadID, event.messageID);
+      api.sendMessage(`Please provide a question or statement. `, event.threadID, event.messageID);
       return;
     }
 
     const { response, messageID } = await getAIResponse(input, event.senderID, event.messageID);
-    api.sendMessage(` 🎀...............................\n¥n${response}\n\n🎀...............................`, event.threadID, messageID);
+    api.sendMessage(` ⚜🌹...............................\n${response}\n⚜🌹...............................`, event.threadID, messageID);
   },
   onChat: async function ({ event, message }) {
     const messageContent = event.body.trim().toLowerCase();
@@ -56,10 +59,10 @@ module.exports = {
       const { response, messageID } = await getAIResponse(input, event.senderID, message.messageID);
       message.reply(`
         
-⚘𝗘𝗱𝘂𝗰𝗮𝘁𝗶𝗼𝗻𝗻𝗲𝗹 | 📕
-━━━━━━━━━━━━━━━\n${response}\n━━━━━━━━━━━━━━━\n 🎀𝗖𝗿𝗲𝗱𝗶𝘁 𝗯𝘆 𝗮𝗽𝗶 ♔
-⚘𝗠𝗲𝘁𝗼𝘂𝘀𝗵𝗲𝗹𝗮♔\n━━━━━━━━━━━━━━━
+⚘𝗔𝗻𝗼𝘁𝗵𝗲𝗿-𝗠𝗲⊰♔⊱
 
+⊰⊹⊱♡⊰⊹⊱♡⊰⊹⊱♡⊰⊹\n${response}\n
+╰┈➤⊹⊱✫⊰⊹⊱✫⊰🍀
 `, messageID);
     }
   }

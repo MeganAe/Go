@@ -5,19 +5,15 @@ function sleep(time) {
 module.exports = {
 	config: {
 		name: "filteruser",
-		version: "1.5",
+		version: "1.6",
 		author: "NTKhang",
 		countDown: 5,
 		role: 1,
-		shortDescription: {
-			vi: "lọc thành viên nhóm",
-			en: "filter group members"
-		},
-		longDescription: {
+		description: {
 			vi: "lọc thành viên nhóm theo số tin nhắn hoặc bị khóa acc",
 			en: "filter group members by number of messages or locked account"
 		},
-		category: "owner",
+		category: "box chat",
 		guide: {
 			vi: "   {pn} [<số tin nhắn> | die]",
 			en: "   {pn} [<number of messages> | die]"

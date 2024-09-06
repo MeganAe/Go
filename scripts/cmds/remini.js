@@ -1,63 +1,75 @@
-const axios = require("axios");
-const fs = require("fs");
-const path = require("path"); // Import the path module
+const axios = require('axios');
+const fs = require('fs-extra');
+const tinyurl = require('tinyurl');
+const path = require('path');
 
 module.exports = {
   config: {
     name: "remini",
-    aliases: [],
-    version: "1.0",
-    author: "Who's Deku",
-    countDown: 5,
+    aliases: ["remini"],
+    author: "Hazeyy/kira/JARiF",
+    version: "69",
+    cooldowns: 5,
     role: 0,
-    shortDescription: "Remini filter",
-    longDescription: "Remini filter",
-    category: "media",
-    guide: "{pn} remini / reply to image or image url",
-  },
-
-  onStart: async function ({ api, event, args }) {
-    const { threadID, messageID } = event;
-    
-    // Get the current directory using __dirname
-    const currentDir = path.resolve(__dirname);
-
-    if (event.type == "message_reply") {
-      var t = event.messageReply.attachments[0].url;
-    } else {
-      var t = args.join(" ");
-    }
-    
-    try {
-      api.sendMessage("Generating...", threadID, messageID);
-
-      const r = await axios.get("https://free-api.ainz-sama101.repl.co/canvas/remini?", {
-        params: {
-          url: encodeURI(t),
-        },
-      });
-      
-      const result = r.data.result.image_data;
-      
-      // Define the path to save the image
-      let ly = path.join(currentDir, "cache", "anime.png");
-
-      // Fetch and save the image
-      let ly1 = (await axios.get(result, {
-        responseType: "arraybuffer",
-      })).data;
-      fs.writeFileSync(ly, Buffer.from(ly1, "utf-8"));
-
-      // Send the image as an attachment
-      api.sendMessage(
-        { attachment: fs.createReadStream(ly) },
-        threadID,
-        () => fs.unlinkSync(ly),
-        messageID
-      );
-    } catch (e) {
-      console.log(e.message);
-      return api.sendMessage("Something went wrong.\n" + e.message, threadID, messageID);
+    shortDescription: {
+      en: "enhance image"
+    },
+    longDescription: {
+      en: "remini filter"
+    },
+    category: "image",
+    guide: {
+      en: "{p}{n} [reply to an img or provide an image URL]"
     }
   },
+
+  onStart: async function ({ api, event }) {
+    const args = event.body.split(/\s+/).slice(1); // Use slice to skip the first element
+    const { threadID, messageID, messageReply } = event;
+    const tempImagePath = path.join(__dirname, 'tmp', 'enhanced_image.jpg');
+
+    // Check if there's a message reply and if it has attachments
+    if (!messageReply || !messageReply.attachments || !(messageReply.attachments[0] || args[0])) {
+      api.sendMessage("┐⁠(⁠￣⁠ヘ⁠￣⁠)⁠┌ | Must reply to an image or provide an image URL.", threadID, messageID);
+      return;
+    }
+
+    // Determine the photo URL from the reply or command arguments
+    const photoUrl = messageReply.attachments[0] ? messageReply.attachments[0].url : args.join(" ");
+
+    // Check if a valid photo URL is present
+    if (!photoUrl) {
+      api.sendMessage("┐⁠(⁠￣⁠ヘ⁠￣⁠)⁠┌ | Must reply to an image or provide an image URL.", threadID, messageID);
+      return;
+    }
+
+    api.sendMessage("⊂⁠(⁠・⁠﹏⁠・⁠⊂⁠) | Please wait...", threadID, async () => {
+      try {
+        // Shorten the photo URL using TinyURL
+        const shortenedUrl = await tinyurl.shorten(photoUrl);
+
+        // Fetch the upscaled image using the upscale API
+        const response = await axios.get(`https://www.api.vyturex.com/upscale?imageUrl=${shortenedUrl}`);
+        const processedImageUrl = response.data.resultUrl;
+
+        // Fetch the processed image
+        const enhancedImageResponse = await axios.get(processedImageUrl, { responseType: "arraybuffer" });
+
+        // Save the processed image to a temporary file
+        fs.writeFileSync(tempImagePath, enhancedImageResponse.data);
+
+        // Send the enhanced image as a reply
+        api.sendMessage({
+          body: "<⁠(⁠￣⁠︶⁠￣⁠)⁠> | Image Enhanced.",
+          attachment: fs.createReadStream(tempImagePath)
+        }, threadID, () => {
+          // Delete the temporary image file after sending
+          fs.unlinkSync(tempImagePath);
+        }, messageID);
+      } catch (error) {
+        // Handle errors gracefully
+        api.sendMessage(`(⁠┌⁠・⁠。⁠・⁠)⁠┌ | Api Dead...: ${error.message}`, threadID, messageID);
+      }
+    });
+  }
 };
