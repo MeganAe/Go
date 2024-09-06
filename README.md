@@ -1,6 +1,6 @@
 #𝗚𝗢𝗔𝗧 𝗕𝗢𝗧 𝗕𝗬 𝗡𝗧𝗞𝗛𝗔𝗡𝗚
 # PROJECT CREATOR</h1>
-<img src="https://i.imgur.com/H320FaM.gif" alt="walker">
+<img src="./dashboard/images/logo.jpg" alt="walker">
 <h1 align="center"><img src="./dashboard/images/logo-non-bg.png" width="22px"> 
 
 # FB PROFILE PHOTO</h1>
