@@ -6,12 +6,12 @@
 const generateOfflineThreadingId = require('../utils');
 
 function canBeCalled(func) {
-	try {
-		Reflect.apply(func, null, []);
-		return true;
-	} catch (error) {
-		return false;
-	}
+  try {
+    Reflect.apply(func, null, []);
+    return true;
+  } catch (error) {
+    return false;
+  }
 }
 
 /**
@@ -21,46 +21,51 @@ function canBeCalled(func) {
  * @param {Object} callback - Callback for the function.
  */
 
-module.exports = function (defaultFuncs, api, ctx) {
-	return function editMessage(text, messageID, callback) {
-		if (!ctx.mqttClient) {
-			throw new Error('Not connected to MQTT');
-		}
+module.exports = function(defaultFuncs, api, ctx) {
+  return function editMessage(text, messageID, callback) {
+    if (!ctx.mqttClient) {
+      throw new Error('Not connected to MQTT');
+    }
+    
+    // modified and fix by kenneth panio the edit now works on secondary profile accounts
 
-		ctx.wsReqNumber += 1;
-		ctx.wsTaskNumber += 1;
+    ctx.wsReqNumber ??= 0;
+    ctx.wsTaskNumber ??= 0;
 
-		const queryPayload = {
-			message_id: messageID,
-			text: text
-		};
+    ctx.wsReqNumber += 1;
+    ctx.wsTaskNumber += 1;
 
-		const query = {
-			failure_count: null,
-			label: '742',
-			payload: JSON.stringify(queryPayload),
-			queue_name: 'edit_message',
-			task_id: ctx.wsTaskNumber
-		};
+    const queryPayload = {
+      message_id: messageID,
+      text: text,
+    };
 
-		const context = {
-			app_id: '2220391788200892',
-			payload: {
-				data_trace_id: null,
-				epoch_id: parseInt(generateOfflineThreadingId),
-				tasks: [query],
-				version_id: '6903494529735864'
-			},
-			request_id: ctx.wsReqNumber,
-			type: 3
-		};
+    const query = {
+      failure_count: null,
+      label: '742',
+      payload: JSON.stringify(queryPayload),
+      queue_name: 'edit_message',
+      task_id: ctx.wsTaskNumber,
+    };
 
-		context.payload = JSON.stringify(context.payload);
+    const context = {
+      app_id: '2220391788200892',
+      payload: {
+        data_trace_id: null,
+        epoch_id: parseInt(generateOfflineThreadingId),
+        tasks: [query],
+        version_id: '6903494529735864',
+      },
+      request_id: ctx.wsReqNumber,
+      type: 3,
+    };
 
-		// if (canBeCalled(callback)) {
-		// 	ctx.reqCallbacks[ctx.wsReqNumber] = callback;
-		// }
+    context.payload = JSON.stringify(context.payload);
 
-		ctx.mqttClient.publish('/ls_req', JSON.stringify(context), { qos: 1, retain: false });
-	};
-};
+    if (canBeCalled(callback)) {
+      ctx.reqCallbacks[ctx.wsReqNumber] = callback;
+    }
+
+    ctx.mqttClient.publish('/ls_req', JSON.stringify(context), { qos: 1, retain: false });
+  }
+}
