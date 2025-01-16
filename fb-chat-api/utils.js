@@ -782,55 +782,60 @@ function _formatAttachment(attachment1, attachment2) {
 }
 
 function formatAttachment(attachments, attachmentIds, attachmentMap, shareMap) {
-	attachmentMap = shareMap || attachmentMap;
-	return attachments
-		? attachments.map(function (val, i) {
-			if (
-				!attachmentMap ||
-				!attachmentIds ||
-				!attachmentMap[attachmentIds[i]]
-			) {
-				return _formatAttachment(val);
-			}
-			return _formatAttachment(val, attachmentMap[attachmentIds[i]]);
-		})
-		: [];
+  attachmentMap = shareMap || attachmentMap;
+  return attachments
+    ? attachments.map(function (val, i) {
+      if (
+        !attachmentMap ||
+        !attachmentIds ||
+        !attachmentMap[attachmentIds[i]]
+      ) {
+        return _formatAttachment(val);
+      }
+      return _formatAttachment(val, attachmentMap[attachmentIds[i]]);
+    })
+    : [];
 }
 
 function formatDeltaMessage(m) {
-	const md = m.delta.messageMetadata;
+  var md = m.delta.messageMetadata;
 
-	const mdata =
-		m.delta.data === undefined
-			? []
-			: m.delta.data.prng === undefined
-				? []
-				: JSON.parse(m.delta.data.prng);
-	const m_id = mdata.map(u => u.i);
-	const m_offset = mdata.map(u => u.o);
-	const m_length = mdata.map(u => u.l);
-	const mentions = {};
-	for (let i = 0; i < m_id.length; i++) {
-		mentions[m_id[i]] = m.delta.body.substring(
-			m_offset[i],
-			m_offset[i] + m_length[i]
-		);
-	}
-	return {
-		type: "message",
-		senderID: formatID(md.actorFbId.toString()),
-		body: m.delta.body || "",
-		threadID: formatID(
-			(md.threadKey.threadFbId || md.threadKey.otherUserFbId).toString()
-		),
-		messageID: md.messageId,
-		attachments: (m.delta.attachments || []).map(v => _formatAttachment(v)),
-		mentions: mentions,
-		timestamp: md.timestamp,
-		isGroup: !!md.threadKey.threadFbId,
-		participantIDs: m.delta.participants || (md.cid ? md.cid.canonicalParticipantFbids : []) || []
-	};
+  var mdata =
+    m.delta.data === undefined
+      ? []
+      : m.delta.data.prng === undefined
+        ? []
+        : JSON.parse(m.delta.data.prng);
+  var m_id = mdata.map(u => u.i);
+  var m_offset = mdata.map(u => u.o);
+  var m_length = mdata.map(u => u.l);
+  var mentions = {};
+  var body = m.delta.body || "";
+  var args = body == "" ? [] : body.trim().split(/\s+/);
+  for (var i = 0; i < m_id.length; i++) {
+    mentions[m_id[i]] = m.delta.body.substring(
+      m_offset[i],
+      m_offset[i] + m_length[i]
+    );
+  }
+
+  return {
+    type: "message",
+    senderID: formatID(md.actorFbId.toString()),
+    threadID: formatID(
+      (md.threadKey.threadFbId || md.threadKey.otherUserFbId).toString()
+    ),
+    args: args,
+    body: body,
+    messageID: md.messageId,
+    attachments: (m.delta.attachments || []).map(v => _formatAttachment(v)),
+    mentions: mentions,
+    timestamp: md.timestamp,
+    isGroup: !!md.threadKey.threadFbId,
+    participantIDs: m.delta.participants || []
+  };
 }
+
 
 function formatID(id) {
 	if (id != undefined && id != null) {
@@ -842,74 +847,73 @@ function formatID(id) {
 }
 
 function formatMessage(m) {
-	const originalMessage = m.message ? m.message : m;
-	const obj = {
-		type: "message",
-		senderName: originalMessage.sender_name,
-		senderID: formatID(originalMessage.sender_fbid.toString()),
-		participantNames: originalMessage.group_thread_info
-			? originalMessage.group_thread_info.participant_names
-			: [originalMessage.sender_name.split(" ")[0]],
-		participantIDs: originalMessage.group_thread_info
-			? originalMessage.group_thread_info.participant_ids.map(function (v) {
-				return formatID(v.toString());
-			})
-			: [formatID(originalMessage.sender_fbid)],
-		body: originalMessage.body || "",
-		threadID: formatID(
-			(
-				originalMessage.thread_fbid || originalMessage.other_user_fbid
-			).toString()
-		),
-		threadName: originalMessage.group_thread_info
-			? originalMessage.group_thread_info.name
-			: originalMessage.sender_name,
-		location: originalMessage.coordinates ? originalMessage.coordinates : null,
-		messageID: originalMessage.mid
-			? originalMessage.mid.toString()
-			: originalMessage.message_id,
-		attachments: formatAttachment(
-			originalMessage.attachments,
-			originalMessage.attachmentIds,
-			originalMessage.attachment_map,
-			originalMessage.share_map
-		),
-		timestamp: originalMessage.timestamp,
-		timestampAbsolute: originalMessage.timestamp_absolute,
-		timestampRelative: originalMessage.timestamp_relative,
-		timestampDatetime: originalMessage.timestamp_datetime,
-		tags: originalMessage.tags,
-		reactions: originalMessage.reactions ? originalMessage.reactions : [],
-		isUnread: originalMessage.is_unread
-	};
+  var originalMessage = m.message ? m.message : m;
+  var obj = {
+    type: "message",
+    senderName: originalMessage.sender_name,
+    senderID: formatID(originalMessage.sender_fbid.toString()),
+    participantNames: originalMessage.group_thread_info
+      ? originalMessage.group_thread_info.participant_names
+      : [originalMessage.sender_name.split(" ")[0]],
+    participantIDs: originalMessage.group_thread_info
+      ? originalMessage.group_thread_info.participant_ids.map(function (v) {
+        return formatID(v.toString());
+      })
+      : [formatID(originalMessage.sender_fbid)],
+    body: originalMessage.body || "",
+    threadID: formatID(
+      (
+        originalMessage.thread_fbid || originalMessage.other_user_fbid
+      ).toString()
+    ),
+    threadName: originalMessage.group_thread_info
+      ? originalMessage.group_thread_info.name
+      : originalMessage.sender_name,
+    location: originalMessage.coordinates ? originalMessage.coordinates : null,
+    messageID: originalMessage.mid
+      ? originalMessage.mid.toString()
+      : originalMessage.message_id,
+    attachments: formatAttachment(
+      originalMessage.attachments,
+      originalMessage.attachmentIds,
+      originalMessage.attachment_map,
+      originalMessage.share_map
+    ),
+    timestamp: originalMessage.timestamp,
+    timestampAbsolute: originalMessage.timestamp_absolute,
+    timestampRelative: originalMessage.timestamp_relative,
+    timestampDatetime: originalMessage.timestamp_datetime,
+    tags: originalMessage.tags,
+    reactions: originalMessage.reactions ? originalMessage.reactions : [],
+    isUnread: originalMessage.is_unread
+  };
 
-	if (m.type === "pages_messaging")
-		obj.pageID = m.realtime_viewer_fbid.toString();
-	obj.isGroup = obj.participantIDs.length > 2;
+  if (m.type === "pages_messaging")
+    obj.pageID = m.realtime_viewer_fbid.toString();
+  obj.isGroup = obj.participantIDs.length > 2;
 
-	return obj;
+  return obj;
 }
 
 function formatEvent(m) {
-	const originalMessage = m.message ? m.message : m;
-	let logMessageType = originalMessage.log_message_type;
-	let logMessageData;
-	if (logMessageType === "log:generic-admin-text") {
-		logMessageData = originalMessage.log_message_data.untypedData;
-		logMessageType = getAdminTextMessageType(
-			originalMessage.log_message_data.message_type
-		);
-	}
-	else {
-		logMessageData = originalMessage.log_message_data;
-	}
+  var originalMessage = m.message ? m.message : m;
+  var logMessageType = originalMessage.log_message_type;
+  var logMessageData;
+  if (logMessageType === "log:generic-admin-text") {
+    logMessageData = originalMessage.log_message_data.untypedData;
+    logMessageType = getAdminTextMessageType(
+      originalMessage.log_message_data.message_type
+    );
+  } else {
+    logMessageData = originalMessage.log_message_data;
+  }
 
-	return Object.assign(formatMessage(originalMessage), {
-		type: "event",
-		logMessageType: logMessageType,
-		logMessageData: logMessageData,
-		logMessageBody: originalMessage.log_message_body
-	});
+  return Object.assign(formatMessage(originalMessage), {
+    type: "event",
+    logMessageType: logMessageType,
+    logMessageData: logMessageData,
+    logMessageBody: originalMessage.log_message_body
+  });
 }
 
 function formatHistoryMessage(m) {
@@ -923,84 +927,71 @@ function formatHistoryMessage(m) {
 
 // Get a more readable message type for AdminTextMessages
 function getAdminTextMessageType(type) {
-	switch (type) {
-		case "change_thread_theme":
-			return "log:thread-color";
-		case "change_thread_icon":
-		case "change_thread_quick_reaction":
-			return "log:thread-icon";
-		case "change_thread_nickname":
-			return "log:user-nickname";
-		case "change_thread_admins":
-			return "log:thread-admins";
-		case "group_poll":
-			return "log:thread-poll";
-		case "change_thread_approval_mode":
-			return "log:thread-approval-mode";
-		case "messenger_call_log":
-		case "participant_joined_group_call":
-			return "log:thread-call";
-		default:
-			return type;
-	}
+  switch (type) {
+    case "change_thread_theme":
+      return "log:thread-color";
+    case "change_thread_quick_reaction":
+      return "log:thread-icon";
+    case "change_thread_nickname":
+      return "log:user-nickname";
+    case "change_thread_admins":
+      return "log:thread-admins";
+    case "group_poll":
+      return "log:thread-poll";
+    case "change_thread_approval_mode":
+      return "log:thread-approval-mode";
+    case "messenger_call_log":
+    case "participant_joined_group_call":
+      return "log:thread-call";
+    default:
+      return type;
+  }
 }
 
 function formatDeltaEvent(m) {
-	let logMessageType;
-	let logMessageData;
+  var logMessageType;
+  var logMessageData;
 
-	// log:thread-color => {theme_color}
-	// log:user-nickname => {participant_id, nickname}
-	// log:thread-icon => {thread_icon}
-	// log:thread-name => {name}
-	// log:subscribe => {addedParticipants - [Array]}
-	// log:unsubscribe => {leftParticipantFbId}
+  // log:thread-color => {theme_color}
+  // log:user-nickname => {participant_id, nickname}
+  // log:thread-icon => {thread_icon}
+  // log:thread-name => {name}
+  // log:subscribe => {addedParticipants - [Array]}
+  // log:unsubscribe => {leftParticipantFbId}
 
-	switch (m.class) {
-		case "AdminTextMessage":
-			logMessageData = m.untypedData;
-			logMessageType = getAdminTextMessageType(m.type);
-			break;
-		case "ThreadName":
-			logMessageType = "log:thread-name";
-			logMessageData = { name: m.name };
-			break;
-		case "ParticipantsAddedToGroupThread":
-			logMessageType = "log:subscribe";
-			logMessageData = { addedParticipants: m.addedParticipants };
-			break;
-		case "ParticipantLeftGroupThread":
-			logMessageType = "log:unsubscribe";
-			logMessageData = { leftParticipantFbId: m.leftParticipantFbId };
-			break;
-		case "ApprovalQueue":
-			logMessageType = "log:approval-queue";
-			logMessageData = {
-				approvalQueue: {
-					action: m.action,
-					recipientFbId: m.recipientFbId,
-					requestSource: m.requestSource,
-					...m.messageMetadata
-				}
-			};
-	}
+  switch (m.class) {
+    case "AdminTextMessage":
+      logMessageType = getAdminTextMessageType(m.type);
+      logMessageData = m.untypedData;
+      break;
+    case "ThreadName":
+      logMessageType = "log:thread-name";
+      logMessageData = { name: m.name };
+      break;
+    case "ParticipantsAddedToGroupThread":
+      logMessageType = "log:subscribe";
+      logMessageData = { addedParticipants: m.addedParticipants };
+      break;
+    case "ParticipantLeftGroupThread":
+      logMessageType = "log:unsubscribe";
+      logMessageData = { leftParticipantFbId: m.leftParticipantFbId };
+      break;
+  }
 
-	return {
-		type: "event",
-		threadID: formatID(
-			(
-				m.messageMetadata.threadKey.threadFbId ||
-				m.messageMetadata.threadKey.otherUserFbId
-			).toString()
-		),
-		messageID: m.messageMetadata.messageId.toString(),
-		logMessageType: logMessageType,
-		logMessageData: logMessageData,
-		logMessageBody: m.messageMetadata.adminText,
-		timestamp: m.messageMetadata.timestamp,
-		author: m.messageMetadata.actorFbId,
-		participantIDs: (m.participants || []).map(p => p.toString())
-	};
+  return {
+    type: "event",
+    threadID: formatID(
+      (
+        m.messageMetadata.threadKey.threadFbId ||
+        m.messageMetadata.threadKey.otherUserFbId
+      ).toString()
+    ),
+    logMessageType: logMessageType,
+    logMessageData: logMessageData,
+    logMessageBody: m.messageMetadata.adminText,
+    author: m.messageMetadata.actorFbId,
+    participantIDs: m.participants || []
+  };
 }
 
 function formatTyp(event) {
@@ -1275,6 +1266,7 @@ function parseAndCheckLogin(ctx, defaultFuncs, retryCount, sourceCall) {
 						.then(parseAndCheckLogin(ctx, defaultFuncs, retryCount, sourceCall));
 				}
 			}
+			if (data.statusCose === 404) return;
 			if (data.statusCode !== 200)
 				throw new CustomError({
 					message: "parseAndCheckLogin got status code: " + data.statusCode + ". Bailing out of trying to parse response.",
@@ -1429,39 +1421,39 @@ function formatCookie(arr, url) {
 }
 
 function formatThread(data) {
-	return {
-		threadID: formatID(data.thread_fbid.toString()),
-		participants: data.participants.map(formatID),
-		participantIDs: data.participants.map(formatID),
-		name: data.name,
-		nicknames: data.custom_nickname,
-		snippet: data.snippet,
-		snippetAttachments: data.snippet_attachments,
-		snippetSender: formatID((data.snippet_sender || "").toString()),
-		unreadCount: data.unread_count,
-		messageCount: data.message_count,
-		imageSrc: data.image_src,
-		timestamp: data.timestamp,
-		serverTimestamp: data.server_timestamp, // what is this?
-		muteUntil: data.mute_until,
-		isCanonicalUser: data.is_canonical_user,
-		isCanonical: data.is_canonical,
-		isSubscribed: data.is_subscribed,
-		folder: data.folder,
-		isArchived: data.is_archived,
-		recipientsLoadable: data.recipients_loadable,
-		hasEmailParticipant: data.has_email_participant,
-		readOnly: data.read_only,
-		canReply: data.can_reply,
-		cannotReplyReason: data.cannot_reply_reason,
-		lastMessageTimestamp: data.last_message_timestamp,
-		lastReadTimestamp: data.last_read_timestamp,
-		lastMessageType: data.last_message_type,
-		emoji: data.custom_like_icon,
-		color: data.custom_color,
-		adminIDs: data.admin_ids,
-		threadType: data.thread_type
-	};
+  return {
+    threadID: formatID(data.thread_fbid.toString()),
+    participants: data.participants.map(formatID),
+    participantIDs: data.participants.map(formatID),
+    name: data.name,
+    nicknames: data.custom_nickname,
+    snippet: data.snippet,
+    snippetAttachments: data.snippet_attachments,
+    snippetSender: formatID((data.snippet_sender || "").toString()),
+    unreadCount: data.unread_count,
+    messageCount: data.message_count,
+    imageSrc: data.image_src,
+    timestamp: data.timestamp,
+    serverTimestamp: data.server_timestamp, // what is this?
+    muteUntil: data.mute_until,
+    isCanonicalUser: data.is_canonical_user,
+    isCanonical: data.is_canonical,
+    isSubscribed: data.is_subscribed,
+    folder: data.folder,
+    isArchived: data.is_archived,
+    recipientsLoadable: data.recipients_loadable,
+    hasEmailParticipant: data.has_email_participant,
+    readOnly: data.read_only,
+    canReply: data.can_reply,
+    cannotReplyReason: data.cannot_reply_reason,
+    lastMessageTimestamp: data.last_message_timestamp,
+    lastReadTimestamp: data.last_read_timestamp,
+    lastMessageType: data.last_message_type,
+    emoji: data.custom_like_icon,
+    color: data.custom_color,
+    adminIDs: data.admin_ids,
+    threadType: data.thread_type
+  };
 }
 
 function getType(obj) {
@@ -1542,4 +1534,3 @@ module.exports = {
 	setProxy,
 	checkLiveCookie
 };
-
